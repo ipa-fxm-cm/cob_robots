@@ -1,0 +1,41 @@
+## Nonlinear Model Predicitive Control Parameters
+root_frame: odom_combined
+
+nmpc:
+  state_dim: 10
+  control_dim: 10
+  time_horizon: 0.5
+  shooting_nodes: 5
+  
+  base:
+    base_active: true
+    transformations: ['T1','T2','T3']
+    dh:
+      T1:  {type: 'base_x', theta: '0.0' , d: 'x(0)'  , a: 0.0, alpha:  0.0}
+      T2:  {type: 'base_y', theta: '0.0' , d: 'x(1)'  , a: 0.0, alpha:  0.0}
+      T3:  {type: 'r', theta: '-3.14'   , d: '1.0065', a: 0.0, alpha: 1.5708}
+
+  #Denavit Hartenberg Parameters (type, theta, d, a, alpha)
+  transformations: ['T1','T2','T3','T4','T5','T6','T7']
+  dh:
+    T1:  {type: 'r', theta: '0.0'   , d: '0.2445', a: 0.0, alpha:  1.5708}
+    T2:  {type: 'r', theta: '0.0'   , d: '0.0'   , a: 0.0, alpha: -1.5708}
+    T3:  {type: 'r', theta: '0.0'   , d: '0.4536', a: 0.0, alpha:  1.5708}
+    T4:  {type: 'r', theta: '0.0'   , d: '0.0'   , a: 0.0, alpha: -1.5708}
+    T5:  {type: 'r', theta: '0.0'   , d: '0.2986', a: 0.0, alpha:  1.5708}
+    T6:  {type: 'r', theta: '0.0'   , d: '0.0'   , a: 0.0, alpha: -1.5708}
+    T7:  {type: 'r', theta: '0.0'   , d: '0.0'   , a: 0.0, alpha:  0.0}
+
+  constraints:
+    state:
+      path_constraints:
+        min: [-999, -999, -999, 0, -1.92, -2.967, -2.618, -2.967, -2.443, -2.967]
+        max: [ 999,  999,  999,  0,  1.92,  2.967,  2.618,  2.967,  2.443,  2.967]
+      terminal_constraints:
+        min: [-999, -999, -999, 0, -1.92, -2.967, -2.618, -2.967, -2.443, -2.967]
+        max: [ 999,  999,  999,  0,  1.92,  2.967,  2.618,  2.967,  2.443,  2.967]
+    input:
+      input_constraints:
+        min: [-0.3, -0.3, -1, -1, -1, -1, -1, -1, -1, -1]
+        max: [ 0.3,  0.3,  1,  1,  1,  1,  1,  1,  1,  1]
+

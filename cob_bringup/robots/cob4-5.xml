@@ -26,6 +26,14 @@
 	<include file="$(find cob_default_robot_config)/upload_param.launch">
 		<arg name="robot" value="$(arg robot)"/>
 	</include>
+	
+    <!-- Nonlinear MPC parameter -->
+    <rosparam command="load" file="$(find cob_hardware_config)/robots/$(arg robot)/config/nmpc.yaml" />
+    
+    <node pkg="cob_nonlinear_mpc" type="cob_nonlinear_mpc_node" name="nmpc" cwd="node" respawn="false" output="screen">
+        <remap from="base/odometry" to="/base/odometry_controller/odometry"/>
+        <remap from="base/command" to="/base/twist_mux/command_syncmm"/>
+    </node>
 
 	<group>
 		<machine name="cob4-5-b1" address="$(arg cob4-5-b1)" env-loader="$(arg env-script)" default="true" timeout="30"/>
