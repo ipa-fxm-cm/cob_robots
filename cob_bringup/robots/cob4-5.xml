@@ -27,14 +27,6 @@
 		<arg name="robot" value="$(arg robot)"/>
 	</include>
 	
-    <!-- Nonlinear MPC parameter -->
-    <rosparam command="load" file="$(find cob_hardware_config)/robots/$(arg robot)/config/nmpc.yaml" />
-    
-    <node pkg="cob_nonlinear_mpc" type="cob_nonlinear_mpc_node" name="nmpc" cwd="node" respawn="false" output="screen">
-        <remap from="base/odometry" to="/base/odometry_controller/odometry"/>
-        <remap from="base/command" to="/base/twist_mux/command_syncmm"/>
-    </node>
-
 	<group>
 		<machine name="cob4-5-b1" address="$(arg cob4-5-b1)" env-loader="$(arg env-script)" default="true" timeout="30"/>
 
@@ -135,6 +127,8 @@
 			<arg name="can_device" value="can3"/>
 			<arg name="sim" value="$(arg sim)"/>
 			<arg if="$(arg sim)" name="cartesian_control" value="true"/>
+			<arg if="$(arg sim)" name="twist_control" value="false"/>
+			<arg if="$(arg sim)" name="nmpc_control" value="true"/>
 		</include>
 		<include file="$(find cob_bringup)/components/canopen_generic.launch">
 			<arg name="robot" value="$(arg robot)"/>
@@ -142,6 +136,8 @@
 			<arg name="can_device" value="can2"/>
 			<arg name="sim" value="$(arg sim)"/>
 			<arg if="$(arg sim)" name="cartesian_control" value="true"/>
+			<arg if="$(arg sim)" name="twist_control" value="false"/>
+			<arg if="$(arg sim)" name="nmpc_control" value="false"/>
 		</include>
 		<include file="$(find cob_bringup)/components/canopen_generic.launch">
 			<arg name="robot" value="$(arg robot)"/>

@@ -9,6 +9,8 @@
 	<arg name="start_external_sync" default="$(arg use_external_sync)"/>
 
 	<arg name="cartesian_control" default="false"/>
+	<arg name="twist_control" default="false"/>
+	<arg name="nmpc_control" default="false"/>
 	<arg name="sim" default="false"/>
 
 	<include unless="$(arg sim)" file="$(find cob_bringup)/drivers/canopen_402.launch">
@@ -28,6 +30,8 @@
 	<include if="$(arg cartesian_control)" file="$(find cob_bringup)/controllers/generic_cartesian_controller.launch">
 		<arg name="robot" value="$(arg robot)"/>
 		<arg name="component_name" value="$(arg component_name)"/>
+		<arg name="twist_control" value="$(arg twist_control)"/>
+		<arg name="nmpc_control" value="$(arg nmpc_control)"/>
 		<arg name="debug" value="false"/>
 	</include>
 </launch>
