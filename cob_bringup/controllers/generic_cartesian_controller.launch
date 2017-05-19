@@ -6,6 +6,7 @@
 	<arg name="component_name"/>
 	<arg name="debug" default="false"/>
 	<arg name="twist_control" default="false"/>
+	<arg name="nmpc_control" default="false"/>
 
     <group ns="$(arg component_name)">
 		<!-- load Cartesian controller config -->
@@ -19,13 +20,16 @@
 				<remap from="base/command" to="/base/twist_mux/command_syncmm"/>
 			</node>
 		</group>
-		<!-- NONLINEAR controllers 
-	
-    	<node pkg="cob_nonlinear_mpc" type="cob_nonlinear_mpc_node" name="nmpc" cwd="node" respawn="false" output="screen">
-        	<remap from="base/odometry" to="/base/odometry_controller/odometry"/>
-        	<remap from="base/command" to="/base/twist_mux/command_syncmm"/>
-    	</node>
-    	-->
+		
+		<!-- Nonlinear MPC parameter -->
+		<group if="$(arg nmpc_control)">
+			<rosparam command="load" file="$(find cob_hardware_config)/robots/$(arg robot)/config/$(arg component_name)_nmpc.yaml" />
+
+			<node pkg="cob_nonlinear_mpc" type="cob_nonlinear_mpc_node" name="nmpc" cwd="node" respawn="false" output="screen">
+				<remap from="base/odometry" to="/base/odometry_controller/odometry"/>
+				<remap from="base/command" to="/base/twist_mux/command_syncmm"/>
+			</node>
+		</group>
 
 		<node pkg="cob_frame_tracker" type="cob_frame_tracker_node" name="frame_tracker" cwd="node" respawn="false" output="screen"/>
 		<node pkg="cob_frame_tracker" type="interactive_frame_target_node" name="interactive_target" cwd="node" respawn="false" output="screen"/>
