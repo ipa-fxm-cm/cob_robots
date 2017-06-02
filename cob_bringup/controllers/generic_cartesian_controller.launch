@@ -24,7 +24,7 @@
 		<!-- Nonlinear MPC parameter -->
 		<group if="$(arg nmpc_control)">
 			<rosparam command="load" file="$(find cob_hardware_config)/robots/$(arg robot)/config/$(arg component_name)_nmpc.yaml" />
-
+            <rosparam command="load" file="$(arg pkg_hardware_config)/robots/$(arg robot)/config/$(arg component_name)_nmpc_self_collision.yaml"/>
 			<node pkg="cob_nonlinear_mpc" type="cob_nonlinear_mpc_node" name="nmpc" cwd="node" respawn="false" output="screen">
 				<remap from="base/odometry" to="/base/odometry_controller/odometry"/>
 				<remap from="base/command" to="/base/twist_mux/command_syncmm"/>
