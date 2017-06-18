@@ -61,7 +61,7 @@ twist_controller:
 
 # frame_tracker + interactive_marker
 frame_tracker:
-  update_rate: 100.0
+  update_rate: 10.0
   target_frame: arm_left_7_target
   marker_scale: 0.3
   movable_trans: true
