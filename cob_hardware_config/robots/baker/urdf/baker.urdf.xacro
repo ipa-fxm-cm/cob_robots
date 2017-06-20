@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="baker" >
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find cob_description)/urdf/common.xacro" />
+  <xacro:include filename="$(find cob_description)/urdf/materials.urdf.xacro" />
+
+  <xacro:include filename="$(find cob_hardware_config)/robots/raw3-5/urdf/properties.urdf.xacro" />
+
+  <!-- raw base -->
+  <xacro:include filename="$(find raw_description)/urdf/base_short/base.urdf.xacro" />
+  
+  
+  <joint name="prismatic_joint" type="prismatic" >
+    <axis xyz="0 0 1"/>
+    <origin xyz="0.35 -0.25 0.51" rpy="0.0 0.0 0.4" />
+    <limit effort="1000.0" lower="0.1" upper="0.5" velocity="0.5"/>
+    <parent link="base_link" />
+    <child link="prismatic_link" />
+  </joint>
+
+  <link name="prismatic_link">
+    <xacro:default_inertial />
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <geometry>
+        <box size="0.03 0.1 0.6" />
+      </geometry>
+      <material name="IPA/Black" />
+    </visual>
+  </link>
+  
+  <!-- composition of the robot -->
+  <xacro:raw_base name="base"/>
+
+</robot>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- args -->
+	<arg name="robot" value="baker"/>
+	<arg name="pc1" default="localhost"/>
+	<arg name="env-script" default="$(find cob_bringup)/env.sh"/>
+	<arg name="sim" default="false"/>
+
+	<!-- upload robot description -->
+	<include file="$(find cob_hardware_config)/upload_robot.launch">
+		<arg name="robot" value="$(arg robot)"/>
+	</include>
+	<!-- upload default configuration parameters -->
+	<include file="$(find cob_default_robot_config)/upload_param.launch">
+		<arg name="robot" value="$(arg robot)"/>
+	</include>
+
+	<group>
+		<machine name="pc1" address="$(arg pc1)" env-loader="$(arg env-script)" default="true" timeout="30"/>
+		
+		<include file="$(find cob_bringup)/components/raw3_base.launch" >
+			<arg name="robot" value="$(arg robot)" />
+			<arg name="can_device" value="can1" />
+			<arg name="sim" value="$(arg sim)"/>
+		</include>
+		<!-- overwrite control parameters with non-default values -->
+		<rosparam ns="base" command="load" file="$(find cob_hardware_config)/robots/$(arg robot)/config/base_controller.yaml"/>
+
+		<!-- start additional packages -->
+		<include file="$(find cob_bringup)/tools/robot_state_publisher.launch">
+			<arg name="robot" value="$(arg robot)"/>
+		</include>
+		<include file="$(find cob_script_server)/launch/script_server.launch"/>
+
+	</group>
+
+	<machine name="pc1" address="$(arg pc1)" env-loader="$(arg env-script)" default="true" timeout="30"/>
+
+</launch>
