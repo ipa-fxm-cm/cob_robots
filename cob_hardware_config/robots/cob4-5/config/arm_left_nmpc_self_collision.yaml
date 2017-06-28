@@ -12,6 +12,6 @@ self_collision_matrix: {
 ## Only for base. Values shift the BV up the z axis
 bounding_volume_base : {
     position : [0.2, 0.4, 0.6, 0.8, 1.0, 1.25],
-    bv_radius : [0.35, 0.25, 0.2, 0.2, 0.2, 0.25],
+    bv_radius : [0.4, 0.29, 0.23, 0.23, 0.23, 0.3],
 }
 
