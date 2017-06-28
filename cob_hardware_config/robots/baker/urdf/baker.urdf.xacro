@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<robot name="baker" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  
+  <!-- common stuff -->
+  <xacro:include filename="$(find cob_description)/urdf/common.xacro" />
+  <xacro:include filename="$(find cob_description)/urdf/materials.urdf.xacro" />
+
+  <xacro:include filename="$(find cob_hardware_config)/robots/raw3-5/urdf/properties.urdf.xacro" />
+  <!-- raw base -->
+  <xacro:include filename="$(find raw_description)/urdf/base_short/base.urdf.xacro" />
+
+   <material name="red">
+       <color rgba="1 0 0 1"/>
+    </material>
+    
+    <material name="grey">
+       <color rgba="0.82 0.82 0.82 1"/>
+    </material>
+    
+  <link name="odom_combined">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+  </link>
+  
+  <joint name="odom_joint" type="fixed">
+    <parent link="odom_combined"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+  
+  <!-- composition of the robot -->
+  <xacro:raw_base name="base"/>
+  
+  <joint name="fixed" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="link1_fixed"/>
+    <origin xyz="-0.4 0.2 0.2" rpy="0 -1.57 0.2"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+
+  <!-- Base Link -->
+  <link name="link1_fixed">
+    <visual>
+      <origin xyz="0.27 0 -0.01" rpy="0 1.57 0"/>
+      <geometry>
+    <box size="0.01 0.1 0.6"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+    
+  <joint name="prismatic1" type="prismatic">
+    <limit effort="30" velocity="1.0" lower="0" upper="0.5" />
+    <parent link="link1_fixed"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+
+  <!-- Base Link -->
+  <link name="link1">
+  </link>
+
+  <joint name="joint1" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <limit effort="30" velocity="1.0" lower="-1.37" upper="1.55" />
+    <origin xyz="0.0 0.0 0.0" rpy="0 0.0 1.57"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+  <!-- Middle Link -->
+  <link name="link2">
+    <visual>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      <geometry>
+    <cylinder length="0.3" radius="0.03"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+  
+  <joint name="joint2" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <limit effort="30" velocity="1.0" lower="-2.4" upper="2.4" />
+    <origin xyz="0 0.05 0.3" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
+  </joint>
+  
+    <!-- Top Link -->
+  <link name="link3">
+    <visual>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      <geometry>
+    <cylinder length="0.3" radius="0.03"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <joint name="fixed_joint" type="fixed">
+    <parent link="link3"/>
+    <child link="link3_fixed"/>
+    <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+    <!-- Top Link -->
+  <link name="link3_fixed">
+    <visual>
+      <origin xyz="0 -0.025 0.0" rpy="1.57 0 0"/>
+      <geometry>
+    <cylinder length="0.11" radius="0.03"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+  
+  <joint name="gripper_joint" type="revolute">
+     <parent link="link3_fixed"/>
+    <child link="gripper_link"/>
+    <limit effort="30" velocity="1.0" lower="-2.4" upper="2.4" />
+    <origin xyz="0 -0.05 0.295" rpy="0 0 0"/>
+    <axis xyz="0 1 0" />
+    <dynamics damping="0.7"/>
+  </joint>
+
+  <!-- Gripper -->
+  <link name="gripper_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <sphere radius="0.03"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+
+</robot>
