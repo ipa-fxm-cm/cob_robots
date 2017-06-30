@@ -1,5 +1,9 @@
 name: arm
 
+sync:
+  interval_ms: 10
+  overflow: 0
+
 defaults:
   eds_pkg: schunk_lwa4p_extended
   eds_file: "config/Schunk_0_63.dcf"

@@ -5,7 +5,6 @@
 
 	<include file="$(find cob_bringup)/robots/lwa4p_extended.xml">
 
-		<arg name="env-script" value="$(arg env-script)"/>
 	</include>
 
 </launch>
