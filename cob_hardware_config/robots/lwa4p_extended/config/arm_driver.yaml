@@ -16,16 +16,16 @@ defaults:
 
 nodes:
   arm_1_joint:
-    id: 3
+    id: 61
   arm_2_joint:
-    id: 4
+    id: 62
   arm_3_joint:
-    id: 5
+    id: 63
   arm_4_joint:
-    id: 6
+    id: 64
   arm_5_joint:
-    id: 7
+    id: 65
   arm_6_joint:
-    id: 8
+    id: 66
   arm_7_joint:
-    id: 9
+    id: 67

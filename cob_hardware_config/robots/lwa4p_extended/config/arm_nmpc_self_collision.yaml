@@ -3,9 +3,10 @@
 ## Left: The link that is considered an 'obstacle' during self-collision avoidance
 ## Right: The links of the component that are to be checked for self-collision with the 'obstacle'
 self_collision_matrix: {
-    arm_6_link : [arm_3_link, floor],
-    arm_4_link : [floor],
+    arm_6_link : [arm_3_link],
+    arm_4_link : [],
     arm_2_link : [],
+    floor      : [arm_3_link, arm_5_link, arm_7_link],
 }
 
 ## Only for base. Values shift the BV up the z axis
