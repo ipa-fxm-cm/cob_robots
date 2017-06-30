@@ -1,13 +1,11 @@
+<?xml version="1.0"?>
 <launch>
-  <param name="robot_description"
-    command="$(find xacro)/xacro --inorder '$(find cob_hardware_config)/robots/baker/urdf/baker.xacro'" />
 
-  <!-- send fake joint values -->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="use_gui" value="TRUE"/>
-  </node>
+    <arg name="env-script" default="$(find cob_bringup)/env.sh"/>
 
-  <!-- Combine joint values -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+    <include file="$(find cob_bringup)/robots/baker.xml">
+        <arg name="pc1" value="i60sr2"/>
+        <arg name="env-script" value="$(arg env-script)"/>
+    </include>
 
 </launch>

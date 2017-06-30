@@ -3,11 +3,9 @@
 
 	<!-- args -->
 	<arg name="robot" value="baker"/>
-	<arg name="pc1" default="localhost"/>
-	<arg name="pc2" default="localhost"/>
-	<arg name="ur_ip" default="localhost"/>
-	<arg name="env-script" default="$(find cob_bringup)/env.sh"/>
-	<arg name="sim" default="false"/>
+    <arg name="pc1" default="localhost"/>
+    <arg name="env-script" default="$(find cob_bringup)/env.sh"/>
+    <arg name="sim" default="false"/>
 
 	<!-- upload robot description -->
 	<include file="$(find cob_hardware_config)/upload_robot.launch">
@@ -35,34 +33,29 @@
             <arg if="$(arg sim)" name="nmpc_control" value="true"/>
         </include>
 
-		<!-- start common nodes used in hardware and simulation -->
-		<include file="$(find cob_bringup)/drivers/scan_unifier.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_bringup)/tools/battery_monitor.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_bringup)/tools/emergency_stop_monitor.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_bringup)/tools/base_collision_observer.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_bringup)/tools/diagnostics_aggregator.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_bringup)/tools/teleop.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_bringup)/tools/robot_state_publisher.launch">
-			<arg name="robot" value="$(arg robot)"/>
-		</include>
-		<include file="$(find cob_script_server)/launch/script_server.launch"/>
+        <!-- overwrite control parameters with non-default values -->
+        <rosparam ns="base" command="load" file="$(find cob_hardware_config)/robots/$(arg robot)/config/base_controller.yaml"/>
 
-		<!-- simulation only -->
-		<include if="$(arg sim)" file="$(find cob_bringup)/tools/fake_diagnostics.launch">
-			<arg name="fake_diagnostics" value="'base_laser_front, base_laser_rear, pc1, pc2'"/>
-		</include>
+        <!-- start additional packages -->
+        <include file="$(find cob_bringup)/tools/diagnostics_aggregator.launch" >
+            <arg name="robot" value="$(arg robot)" />
+
+        </include>
+        <include file="$(find cob_bringup)/tools/teleop.launch">
+            <arg name="robot" value="$(arg robot)"/>
+        </include>
+        <include file="$(find cob_bringup)/tools/base_collision_observer.launch">
+            <arg name="robot" value="$(arg robot)"/>
+        </include>
+        <include file="$(find cob_bringup)/tools/robot_state_publisher.launch">
+            <arg name="robot" value="$(arg robot)"/>
+        </include>
+        <include file="$(find cob_script_server)/launch/script_server.launch"/>
+
+        <!-- simulation only -->
+        <include if="$(arg sim)" file="$(find cob_bringup)/tools/fake_diagnostics.launch">
+            <arg name="fake_diagnostics" value="'base_laser_front, base_laser_rear, -pc1, joy'"/>
+        </include>
 	</group>
 
 
